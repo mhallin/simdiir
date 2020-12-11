@@ -230,19 +230,22 @@ impl BiQuadAVX {
             let v_xp6 = _mm256_permutevar8x32_ps(input, _mm256_set1_epi32(6));
             let v_xp7 = _mm256_permutevar8x32_ps(input, _mm256_set1_epi32(7));
 
-            let mut y = _mm256_setzero_ps();
-            y = _mm256_fmadd_ps(self.c_xp7, v_xp7, y);
-            y = _mm256_fmadd_ps(self.c_xp6, v_xp6, y);
-            y = _mm256_fmadd_ps(self.c_xp5, v_xp5, y);
-            y = _mm256_fmadd_ps(self.c_xp4, v_xp4, y);
-            y = _mm256_fmadd_ps(self.c_xp3, v_xp3, y);
-            y = _mm256_fmadd_ps(self.c_xp2, v_xp2, y);
-            y = _mm256_fmadd_ps(self.c_xp1, v_xp1, y);
-            y = _mm256_fmadd_ps(self.c_x0, v_x0, y);
-            y = _mm256_fmadd_ps(self.c_xm1, self.xm1, y);
-            y = _mm256_fmadd_ps(self.c_xm2, self.xm2, y);
-            y = _mm256_fmadd_ps(self.c_ym1, self.ym1, y);
-            y = _mm256_fmadd_ps(self.c_ym2, self.ym2, y);
+            let mut y1 = _mm256_setzero_ps();
+            let mut y2 = _mm256_setzero_ps();
+            y1 = _mm256_fmadd_ps(self.c_xp7, v_xp7, y1);
+            y2 = _mm256_fmadd_ps(self.c_xp6, v_xp6, y2);
+            y1 = _mm256_fmadd_ps(self.c_xp5, v_xp5, y1);
+            y2 = _mm256_fmadd_ps(self.c_xp4, v_xp4, y2);
+            y1 = _mm256_fmadd_ps(self.c_xp3, v_xp3, y1);
+            y2 = _mm256_fmadd_ps(self.c_xp2, v_xp2, y2);
+            y1 = _mm256_fmadd_ps(self.c_xp1, v_xp1, y1);
+            y2 = _mm256_fmadd_ps(self.c_x0, v_x0, y2);
+            y1 = _mm256_fmadd_ps(self.c_xm1, self.xm1, y1);
+            y2 = _mm256_fmadd_ps(self.c_xm2, self.xm2, y2);
+            y1 = _mm256_fmadd_ps(self.c_ym1, self.ym1, y1);
+            y2 = _mm256_fmadd_ps(self.c_ym2, self.ym2, y2);
+
+            let y = _mm256_add_ps(y1, y2);
 
             self.xm2 = v_xp2;
             self.xm1 = v_xp3;
