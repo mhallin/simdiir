@@ -1,0 +1,16 @@
+[package]
+name = "simdiir"
+version = "0.1.0"
+authors = ["mhallin <mhallin@fastmail.com>"]
+edition = "2018"
+
+[[bench]]
+name = "iirbench"
+harness = false
+
+[dependencies]
+rand_xorshift = "0.2"
+rand = "0.7"
+
+[dev-dependencies]
+criterion = "0.3"
